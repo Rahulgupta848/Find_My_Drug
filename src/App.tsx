@@ -1,8 +1,14 @@
+import NavBar from "./common/NavBar"
+import Message from "./common/message"
+import RootRoutes from "./routes"
 
 function App() {
-
   return (
-   <div>Hello world</div>
+    <div className="">
+      <Message/>
+      <NavBar />
+      <RootRoutes />
+    </div>
   )
 }
 

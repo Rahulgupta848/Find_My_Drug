@@ -1,3 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Ultra&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-radio {
+     accent-color: rgb(61, 255, 61);
+     height: 22px;
+     width: 22px;
+}
+
+.err-msg {
+     color: #fc4040;
+     font-size: 12px;
+}
+
+.primany_btn {
+     border: none !important;
+     font-family: "Montserrat-Medium";
+
+}
+
+.primany_btn :focus {
+     border: none !important;
+}
