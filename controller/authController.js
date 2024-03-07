@@ -151,20 +151,25 @@ const signIn = async (req, res) => {
                          })
                     }
 
-                    const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+                    const jwtPayload = {
+                         id: user._id,
+                         role: user.role,
+                    }
+
+                    const token = await jwt.sign(jwtPayload, process.env.JWT_SECRET, { expiresIn: '1h' });
                     const data = {
-                         token:token,
+                         token: token,
                          name: user.name,
                          email: user.email,
                          role: user.role
                     }
-                    if(role === roles.pharmacy){
+                    if (role === roles.pharmacy) {
                          data.pharmacyName = user.pharmacyName
                     }
                     return res.status(200).json({
                          message: 'Logged in successfully',
-                         success:true,
-                         data:data
+                         success: true,
+                         data: data
                     })
 
 
