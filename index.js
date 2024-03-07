@@ -1,8 +1,10 @@
 const express = require('express');
+const cors = require("cors");
 const { connectDB } = require('./config/database');
 const authRouter = require('./routes/authRoutes');
 const app = express();
 app.use(express.json());
+app.use(cors());
 require("dotenv").config();
 
 app.use('/api/fmd/v1',authRouter);

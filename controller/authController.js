@@ -153,6 +153,7 @@ const signIn = async (req, res) => {
 
                     const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
                     const data = {
+                         token:token,
                          name: user.name,
                          email: user.email,
                          role: user.role
@@ -161,8 +162,8 @@ const signIn = async (req, res) => {
                          data.pharmacyName = user.pharmacyName
                     }
                     return res.status(200).json({
-                         token: token,
                          message: 'Logged in successfully',
+                         success:true,
                          data:data
                     })
 
