@@ -1,21 +1,32 @@
 const jwt = require("jsonwebtoken");
+const { roles, codes } = require("../constants");
 require('dotenv').config();
 
 const auth = (req, res, next) => {
-     const token = req.header("Authorization").replace("Bearer ", "");
-     if (!token) {
-          return res.status(405).json({
-               message: 'Unauthorized request',
-               success: false
-          })
-     }
      try {
-          const decode = jwt.verify(token, process.env.JWT_SECRET);
-          req.userData = decode;
-          next();
+          const token = req.header("Authorization")?.replace("Bearer ", "");
+          if (!token) {
+               return res.status(codes.AUTH_MISS).json({
+                    message: 'Unauthorized request',
+                    success: false
+               })
+          }
+
+          try {
+               const decode = jwt.verify(token, process.env.JWT_SECRET);
+               console.log(decode)
+               req.userData = decode;
+               next();
+          } catch (error) {
+               return res.status(codes.TOKEN_EXP).json({
+                    message:'token expired',
+                    success:false
+               })
+          }
 
      } catch (error) {
-          return res.status(500).json({
+          console.log(error)
+          return res.status(codes.INT_SERVER_ERR).json({
                message: 'Internal server error',
                success: false
           })
@@ -24,8 +35,8 @@ const auth = (req, res, next) => {
 
 const isPharmacy = (req, res, next) => {
      const userType = req.userData.role;
-     if (userType !== 'PHARMACY') {
-          return res.status(406), json({
+     if (userType !== roles.pharmacy) {
+          return res.status(codes.UNAUTHORIZED), json({
                message: "You are not authorised to perform this action",
                success: false
           })
