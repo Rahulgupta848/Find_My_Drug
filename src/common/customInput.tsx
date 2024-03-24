@@ -7,9 +7,10 @@ type Props = {
      placeholder?: string;
      value?: string | number;
      onChange?: any;
+     min?:number;
 }
 
-const CInput: React.FC<Props> = ({ title, type, className, width, placeholder, value, onChange }) => {
+const CInput: React.FC<Props> = ({ title, type, className, width, placeholder, value, onChange,min }) => {
      return (
           <div style={{ width: width }} className="px-5">
                <div className="text-[12px] text-white pl-2 font-Ultra">{title}</div>
@@ -19,6 +20,7 @@ const CInput: React.FC<Props> = ({ title, type, className, width, placeholder, v
                     placeholder={placeholder}
                     className={`rounded-3xl h-[40px] bg-transparent border-[1px] ${className} text-white w-[100%] px-5`}
                     type={type}
+                    min={min}
                     >
                </input>
           </div>

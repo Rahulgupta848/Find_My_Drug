@@ -7,6 +7,10 @@ import Apis from "../../api";
 import { useAppDispatch } from "../../redux/store";
 import { showMessage } from "../../redux/slices/messageSlice/messageSlice";
 import { setJwtToken } from "../../api/apiServices";
+import constants from "../../common/constants";
+import { userDetails } from "../../redux/slices/authSlice/authSlice";
+import paths from "../../routes/rootRoutes";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
      const [loginData, setLoginData] = useState<loginState>({
@@ -18,6 +22,7 @@ const Login: React.FC = () => {
           role: ""
      })
      const dispatch = useAppDispatch();
+     const navigate = useNavigate();
      const handleSubmit = async () => {
           setLoginData({ ...loginData, validate: true });
           if (!loginData.email || loginData.email.trim() === "" ||
@@ -38,19 +43,28 @@ const Login: React.FC = () => {
                const res = result?.data;
                if (res?.success) {
                     dispatch(showMessage({ msg: res?.message, error: false, show: true }));
-                    if (loginData?.rememberMe) {
-                         localStorage.setItem("token", JSON.stringify(res?.data?.token));
-                         localStorage.setItem("user", JSON.stringify(res?.data));
-                    } else {
-                         sessionStorage.setItem("token", JSON.stringify(res?.data?.token));
-                         sessionStorage.setItem("user", JSON.stringify(res?.data));
-                    }
+                    dispatch(userDetails(res?.data));
                     setJwtToken(res?.data?.token);
+
+                    if (loginData?.rememberMe) {
+                         localStorage.setItem(constants.TOKEN, res?.data?.token);
+                         localStorage.setItem(constants.USER, res?.data);
+                    } else {
+                         sessionStorage.setItem(constants.TOKEN, res?.data?.token);
+                         sessionStorage.setItem(constants.USER, res?.data);
+                    }
+
+                    if (res?.data?.role === constants.PHARMACY) {
+                         navigate(paths.PHARMACY, { replace: true })
+                        //document.location.replace(paths.PHARMACY);
+                    }
                }
           } catch (error: any) {
                const res = error?.response?.data
                dispatch(showMessage({ msg: res?.message, error: true, show: true }));
           }
+
+
           setLoginData({ ...loginData, loading: false });
      }
 

@@ -1,7 +1,8 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
+import constants from '../common/constants';
 
 
-const baseURL = import.meta.env.VITE_BASE_URL ;
+const baseURL = import.meta.env.VITE_BASE_URL;
 const axiosInstance: AxiosInstance = axios.create({
     baseURL,
     timeout: 10000,
@@ -14,5 +15,6 @@ export const setJwtToken = (token: string | null) => {
         delete axiosInstance.defaults.headers.common['Authorization'];
     }
 };
+
 
 export default axiosInstance;

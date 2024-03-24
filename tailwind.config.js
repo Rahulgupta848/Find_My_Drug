@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily:{
-        Ultra:["Ultra"]
+        Ultra:["Ultra"],
+        Roboto:["Roboto"]
       }
     },
   },
